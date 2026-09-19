@@ -33,6 +33,75 @@
           "Segoe UI",
           sans-serif;
         line-height: 1.5;
+        transition: background-color 0.6s ease, color 0.6s ease;
+      }
+      .lightSwitch {
+        position: fixed;
+        z-index: 40;
+        left: 20px;
+        bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 14px 10px 11px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(15, 15, 15, 0.88);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        font: 700 10px Arial, sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .switchTrack {
+        width: 38px;
+        height: 21px;
+        padding: 3px;
+        border-radius: 999px;
+        background: #444;
+        transition: background 0.35s ease, box-shadow 0.35s ease;
+      }
+      .switchKnob {
+        display: block;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #aaa;
+        transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+      }
+      .lights-on .switchTrack {
+        background: #8f7958;
+        box-shadow: 0 0 18px rgba(217, 199, 174, 0.7);
+      }
+      .lights-on .switchKnob {
+        transform: translateX(17px);
+        background: #fff;
+        box-shadow: 0 0 12px #fff;
+      }
+      .cursorLight {
+        display: none;
+        position: fixed;
+        z-index: 19;
+        width: 260px;
+        height: 260px;
+        left: 0;
+        top: 0;
+        border-radius: 50%;
+        pointer-events: none;
+        background: radial-gradient(circle, rgba(255, 230, 188, 0.2), rgba(217, 199, 174, 0.06) 38%, transparent 70%);
+        opacity: 0;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.25s ease;
+        mix-blend-mode: screen;
+      }
+      @media (pointer: fine) {
+        .cursorLight { display: block; }
+        body:hover .cursorLight { opacity: 1; }
+      }
+      .lights-on .cursorLight {
+        background: radial-gradient(circle, rgba(255, 236, 202, 0.3), rgba(217, 199, 174, 0.09) 40%, transparent 72%);
       }
       a {
         text-decoration: none;
@@ -149,6 +218,11 @@
           #101010 42%,
           #090909 75%
         );
+        transition: background 0.7s ease, box-shadow 0.7s ease;
+      }
+      .lights-on .heroCopy {
+        background: radial-gradient(circle at 80% 50%, #493e30 0, #181512 42%, #090909 76%);
+        box-shadow: inset -40px 0 90px rgba(217, 199, 174, 0.08);
       }
       .hero h1 {
         font-size: clamp(54px, 5.5vw, 78px);
@@ -367,6 +441,11 @@
         background: radial-gradient(circle at 50% 40%, #292929, #101010 68%);
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+        transition: background 0.7s ease, box-shadow 0.7s ease;
+      }
+      .lights-on .aboutVisual {
+        background: radial-gradient(circle at 50% 40%, #4a4033, #15130f 70%);
+        box-shadow: 0 24px 55px rgba(217, 199, 174, 0.16);
       }
       .aboutVisual:before {
         content: "";
@@ -483,12 +562,48 @@
         grid-template-columns: repeat(4, 1fr);
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+      }
+      .guaranteeSteps:before {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        top: -1px;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #fff, #d9c7ae, #fff);
+        box-shadow: 0 0 8px #fff, 0 0 20px rgba(217, 199, 174, 0.9);
+        transition: width 1.8s cubic-bezier(0.2, 0.75, 0.25, 1);
+      }
+      .guarantee.energized .guaranteeSteps:before {
+        width: 100%;
       }
       .guaranteeStep {
         position: relative;
         padding: 30px 25px 32px;
         border-right: 1px solid rgba(255, 255, 255, 0.2);
       }
+      .guaranteeStep:before {
+        content: "";
+        position: absolute;
+        z-index: 3;
+        width: 9px;
+        height: 9px;
+        left: 25px;
+        top: -5px;
+        border-radius: 50%;
+        background: #555;
+        transition: background 0.35s ease, box-shadow 0.35s ease;
+      }
+      .guarantee.energized .guaranteeStep:before {
+        background: #fff;
+        box-shadow: 0 0 9px #fff, 0 0 18px #d9c7ae;
+      }
+      .guarantee.energized .guaranteeStep:nth-child(1):before { transition-delay: 0.15s; }
+      .guarantee.energized .guaranteeStep:nth-child(2):before { transition-delay: 0.55s; }
+      .guarantee.energized .guaranteeStep:nth-child(3):before { transition-delay: 0.95s; }
+      .guarantee.energized .guaranteeStep:nth-child(4):before { transition-delay: 1.35s; }
       .guaranteeStep:last-child { border-right: 0; }
       .stepNumber {
         display: block;
@@ -706,6 +821,10 @@
           border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         .guaranteeStep:last-child { border-bottom: 0; }
+        .lightSwitch {
+          left: 12px;
+          bottom: 12px;
+        }
       }
 
       .quoteSec {
@@ -901,6 +1020,11 @@
     </style>
   </head>
   <body>
+    <button id="lightSwitch" class="lightSwitch" type="button" aria-pressed="false">
+      <span class="switchTrack" aria-hidden="true"><span class="switchKnob"></span></span>
+      <span id="lightSwitchLabel">Tänd sidan</span>
+    </button>
+    <div id="cursorLight" class="cursorLight" aria-hidden="true"></div>
     <div class="powerRail" aria-hidden="true"><span id="powerFill" class="powerFill"></span></div>
     <header>
       <div class="wrap nav">
@@ -1415,6 +1539,68 @@
         updatePowerRail();
         window.addEventListener("scroll", updatePowerRail, { passive: true });
         window.addEventListener("resize", updatePowerRail);
+      })();
+    </script>
+    <script>
+      (function () {
+        var lightSwitch = document.getElementById("lightSwitch");
+        var lightSwitchLabel = document.getElementById("lightSwitchLabel");
+        var cursorLight = document.getElementById("cursorLight");
+        var lightsOn = false;
+
+        try {
+          lightsOn = window.localStorage.getItem("mg-lights") === "on";
+        } catch (error) {}
+
+        var renderLightMode = function () {
+          document.body.classList.toggle("lights-on", lightsOn);
+          lightSwitch.setAttribute("aria-pressed", lightsOn ? "true" : "false");
+          lightSwitchLabel.textContent = lightsOn ? "Släck sidan" : "Tänd sidan";
+        };
+
+        renderLightMode();
+        lightSwitch.addEventListener("click", function () {
+          lightsOn = !lightsOn;
+          renderLightMode();
+          try {
+            window.localStorage.setItem("mg-lights", lightsOn ? "on" : "off");
+          } catch (error) {}
+        });
+
+        var cursorFrame = 0;
+        var cursorX = 0;
+        var cursorY = 0;
+        window.addEventListener(
+          "mousemove",
+          function (event) {
+            cursorX = event.clientX;
+            cursorY = event.clientY;
+            if (!cursorFrame) {
+              cursorFrame = requestAnimationFrame(function () {
+                cursorLight.style.left = cursorX + "px";
+                cursorLight.style.top = cursorY + "px";
+                cursorFrame = 0;
+              });
+            }
+          },
+          { passive: true }
+        );
+
+        var guarantee = document.querySelector(".guarantee");
+        if (guarantee && "IntersectionObserver" in window) {
+          var guaranteeObserver = new IntersectionObserver(
+            function (entries, observer) {
+              if (entries[0].isIntersecting) {
+                guarantee.classList.add("energized");
+                observer.disconnect();
+              }
+            },
+            { threshold: 0.3 }
+          );
+          guaranteeObserver.observe(guarantee);
+        } else if (guarantee) {
+          guarantee.classList.add("energized");
+        }
       })();
     </script>
   </body>
