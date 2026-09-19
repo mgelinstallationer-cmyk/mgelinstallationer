@@ -432,7 +432,6 @@
         pointer-events: none;
       }
       .heroFixtures { top: 22px; right: 32px; }
-      .aboutFixtures { top: 22px; left: 50%; transform: translateX(-50%); }
       .guaranteeFixtures { top: 24px; right: 7%; }
       .fixture {
         position: relative;
@@ -480,31 +479,14 @@
         box-shadow: 0 0 10px #fff, 0 0 22px rgba(255, 214, 151, 0.9);
       }
       .lights-on .fixture:after { opacity: 1; }
-      .aboutVisual:before {
-        content: "";
-        position: absolute;
-        width: 310px;
-        height: 310px;
-        left: 50%;
-        top: 42%;
-        border-radius: 50%;
-        background: rgba(214, 180, 111, 0.24);
-        filter: blur(75px);
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.45);
-        transition: opacity 1.25s ease, transform 1.5s cubic-bezier(0.2, 0.75, 0.25, 1);
-        pointer-events: none;
-      }
-      .aboutVisual.scrollActive:before {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
       .aboutLogoWrap {
         flex: 1;
         width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 26px;
         padding: 45px 40px 25px;
         position: relative;
         z-index: 1;
@@ -514,15 +496,54 @@
         width: min(82%, 460px);
         height: auto;
         filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.45));
+        transition: filter 0.7s ease;
       }
       .motion-ready .aboutLogo {
         opacity: 0;
         transform: scale(0.88);
-        transition: opacity 1s ease, transform 1.2s cubic-bezier(0.2, 0.75, 0.25, 1);
+        transition: opacity 1s ease, transform 1.2s cubic-bezier(0.2, 0.75, 0.25, 1), filter 0.7s ease;
       }
       .motion-ready .aboutVisual.scrollActive .aboutLogo {
         opacity: 1;
         transform: scale(1);
+      }
+      .aboutVisual.logo-lit .aboutLogo {
+        filter:
+          brightness(1.2)
+          drop-shadow(0 0 3px rgba(255, 255, 255, 1))
+          drop-shadow(0 0 10px rgba(255, 240, 210, 0.95))
+          drop-shadow(0 0 24px rgba(217, 199, 174, 0.85))
+          drop-shadow(0 0 48px rgba(217, 199, 174, 0.45));
+      }
+      .logoLightButton {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 17px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.32);
+        font: 700 10px Arial, sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        transition: border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+      }
+      .logoLedDot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #555;
+        transition: background 0.4s ease, box-shadow 0.4s ease;
+      }
+      .aboutVisual.logo-lit .logoLightButton {
+        border-color: rgba(255, 238, 204, 0.75);
+        background: rgba(217, 199, 174, 0.12);
+        box-shadow: 0 0 20px rgba(217, 199, 174, 0.18);
+      }
+      .aboutVisual.logo-lit .logoLedDot {
+        background: #fff4db;
+        box-shadow: 0 0 8px #fff, 0 0 18px #d9c7ae;
       }
       .aboutVisual .aboutFeatures {
         position: relative;
@@ -975,7 +996,6 @@
       @media (prefers-reduced-motion: reduce) {
         .motion-ready .scrollReveal,
         .motion-ready .aboutLogo,
-        .aboutVisual:before,
         .motion-ready .heroCopy > :not(.fixtureRow),
         .motion-ready .heroVisual {
           opacity: 1;
@@ -1320,11 +1340,12 @@
             </div>
           </div>
           <div class="aboutVisual">
-            <div class="fixtureRow aboutFixtures" aria-hidden="true">
-              <span class="fixture"></span><span class="fixture"></span>
-            </div>
             <div class="aboutLogoWrap">
               <img class="aboutLogo" src="logo-white.png" alt="MG Elinstallationer – Din elektriker" />
+              <button id="logoLightButton" class="logoLightButton" type="button" aria-pressed="false">
+                <span class="logoLedDot" aria-hidden="true"></span>
+                <span id="logoLightLabel">Lys upp MG</span>
+              </button>
             </div>
             <div class="aboutFeatures">
               <div class="af">
@@ -1592,10 +1613,15 @@
       (function () {
         var lightSwitch = document.getElementById("lightSwitch");
         var lightSwitchLabel = document.getElementById("lightSwitchLabel");
+        var logoLightButton = document.getElementById("logoLightButton");
+        var logoLightLabel = document.getElementById("logoLightLabel");
+        var aboutVisual = document.querySelector(".aboutVisual");
         var lightsOn = false;
+        var logoLit = false;
 
         try {
           lightsOn = window.localStorage.getItem("mg-lights") === "on";
+          logoLit = window.localStorage.getItem("mg-logo-light") === "on";
         } catch (error) {}
 
         var renderLightMode = function () {
@@ -1610,6 +1636,21 @@
           renderLightMode();
           try {
             window.localStorage.setItem("mg-lights", lightsOn ? "on" : "off");
+          } catch (error) {}
+        });
+
+        var renderLogoLight = function () {
+          aboutVisual.classList.toggle("logo-lit", logoLit);
+          logoLightButton.setAttribute("aria-pressed", logoLit ? "true" : "false");
+          logoLightLabel.textContent = logoLit ? "Släck MG" : "Lys upp MG";
+        };
+
+        renderLogoLight();
+        logoLightButton.addEventListener("click", function () {
+          logoLit = !logoLit;
+          renderLogoLight();
+          try {
+            window.localStorage.setItem("mg-logo-light", logoLit ? "on" : "off");
           } catch (error) {}
         });
 
