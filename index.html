@@ -324,6 +324,25 @@
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
       }
+      .aboutVisual:before {
+        content: "";
+        position: absolute;
+        width: 310px;
+        height: 310px;
+        left: 50%;
+        top: 42%;
+        border-radius: 50%;
+        background: rgba(214, 180, 111, 0.24);
+        filter: blur(75px);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.45);
+        transition: opacity 1.25s ease, transform 1.5s cubic-bezier(0.2, 0.75, 0.25, 1);
+        pointer-events: none;
+      }
+      .aboutVisual.scrollActive:before {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
       .aboutLogoWrap {
         flex: 1;
         width: 100%;
@@ -331,12 +350,23 @@
         align-items: center;
         justify-content: center;
         padding: 45px 40px 25px;
+        position: relative;
+        z-index: 1;
       }
       .aboutLogo {
         display: block;
         width: min(82%, 460px);
         height: auto;
         filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.45));
+      }
+      .motion-ready .aboutLogo {
+        opacity: 0;
+        transform: scale(0.88);
+        transition: opacity 1s ease, transform 1.2s cubic-bezier(0.2, 0.75, 0.25, 1);
+      }
+      .motion-ready .aboutVisual.scrollActive .aboutLogo {
+        opacity: 1;
+        transform: scale(1);
       }
       .aboutVisual .aboutFeatures {
         position: relative;
@@ -626,6 +656,26 @@
       }
       .aboutMore p:last-child {
         margin-bottom: 0;
+      }
+      .motion-ready .scrollReveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.75s ease var(--reveal-delay, 0ms),
+          transform 0.75s cubic-bezier(0.2, 0.75, 0.25, 1) var(--reveal-delay, 0ms);
+      }
+      .motion-ready .scrollReveal.isVisible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .motion-ready .scrollReveal,
+        .motion-ready .aboutLogo,
+        .aboutVisual:before {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
       }
       .reviewsSec {
         padding: 72px 0;
@@ -1113,6 +1163,58 @@
           button.setAttribute("aria-expanded", open ? "true" : "false");
           button.textContent = open ? "Visa mindre ↑" : "Läs mer om mig →";
         });
+    </script>
+    <script>
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+
+        document.body.classList.add("motion-ready");
+
+        var revealItems = document.querySelectorAll(
+          ".sectionTop, .card, .reviewsIntro, .reviewCard, .aboutGrid > div:first-child, .ctaCopy, .quoteGrid"
+        );
+
+        document.querySelectorAll(".card").forEach(function (card, index) {
+          card.style.setProperty("--reveal-delay", index * 90 + "ms");
+        });
+        document.querySelectorAll(".reviewCard").forEach(function (card, index) {
+          card.style.setProperty("--reveal-delay", index * 110 + "ms");
+        });
+
+        revealItems.forEach(function (item) {
+          item.classList.add("scrollReveal");
+        });
+
+        var revealObserver = new IntersectionObserver(
+          function (entries, observer) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("isVisible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.14, rootMargin: "0px 0px -45px 0px" }
+        );
+
+        revealItems.forEach(function (item) {
+          revealObserver.observe(item);
+        });
+
+        var aboutVisual = document.querySelector(".aboutVisual");
+        if (aboutVisual) {
+          var logoObserver = new IntersectionObserver(
+            function (entries, observer) {
+              if (entries[0].isIntersecting) {
+                aboutVisual.classList.add("scrollActive");
+                observer.disconnect();
+              }
+            },
+            { threshold: 0.35 }
+          );
+          logoObserver.observe(aboutVisual);
+        }
+      })();
     </script>
   </body>
 </html>
