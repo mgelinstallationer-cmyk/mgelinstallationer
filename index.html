@@ -316,13 +316,27 @@
         min-height: 470px;
         position: relative;
         display: flex;
-        align-items: flex-end;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
         overflow: hidden;
-        background:
-          linear-gradient(180deg, transparent 45%, rgba(5, 5, 5, 0.88) 100%),
-          url("om-mg-maltes-arbete.jpg") center 56% / cover no-repeat;
+        background: radial-gradient(circle at 50% 40%, #292929, #101010 68%);
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+      }
+      .aboutLogoWrap {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 40px 25px;
+      }
+      .aboutLogo {
+        display: block;
+        width: min(82%, 460px);
+        height: auto;
+        filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.45));
       }
       .aboutVisual .aboutFeatures {
         position: relative;
@@ -470,8 +484,7 @@
           margin-top: 15px;
         }
         .aboutVisual {
-          min-height: 560px;
-          background-position: center 52%;
+          min-height: 430px;
         }
         .aboutVisual .aboutFeatures {
           margin-top: 0;
@@ -942,7 +955,10 @@
               </p>
             </div>
           </div>
-          <div class="aboutVisual" role="img" aria-label="Malte från MG Elinstallationer under arbete">
+          <div class="aboutVisual">
+            <div class="aboutLogoWrap">
+              <img class="aboutLogo" src="logo-white.png" alt="MG Elinstallationer – Din elektriker" />
+            </div>
             <div class="aboutFeatures">
               <div class="af">
                 <span class="ico">ϟ</span><span>Erfarenhet</span>
