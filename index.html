@@ -219,10 +219,8 @@
           #090909 75%
         );
         transition: background 0.7s ease, box-shadow 0.7s ease;
-      }
-      .lights-on .heroCopy {
-        background: radial-gradient(circle at 80% 50%, #493e30 0, #181512 42%, #090909 76%);
-        box-shadow: inset -40px 0 90px rgba(217, 199, 174, 0.08);
+        position: relative;
+        overflow: hidden;
       }
       .hero h1 {
         font-size: clamp(54px, 5.5vw, 78px);
@@ -249,23 +247,23 @@
         background-position: center 60%;
         background-repeat: no-repeat;
       }
-      .motion-ready .heroCopy > *,
+      .motion-ready .heroCopy > :not(.fixtureRow),
       .motion-ready .heroVisual {
         opacity: 0;
       }
-      .motion-ready .heroCopy > * {
+      .motion-ready .heroCopy > :not(.fixtureRow) {
         transform: translateY(24px);
         transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.2, 0.75, 0.25, 1);
       }
-      .motion-ready .heroCopy > *:nth-child(2) { transition-delay: 0.1s; }
-      .motion-ready .heroCopy > *:nth-child(3) { transition-delay: 0.2s; }
-      .motion-ready .heroCopy > *:nth-child(4) { transition-delay: 0.3s; }
-      .motion-ready .heroCopy > *:nth-child(5) { transition-delay: 0.4s; }
+      .motion-ready .heroCopy > :not(.fixtureRow):nth-child(3) { transition-delay: 0.1s; }
+      .motion-ready .heroCopy > :not(.fixtureRow):nth-child(4) { transition-delay: 0.2s; }
+      .motion-ready .heroCopy > :not(.fixtureRow):nth-child(5) { transition-delay: 0.3s; }
+      .motion-ready .heroCopy > :not(.fixtureRow):nth-child(6) { transition-delay: 0.4s; }
       .motion-ready .heroVisual {
         transform: scale(1.035);
         transition: opacity 1.1s ease 0.12s, transform 1.5s cubic-bezier(0.2, 0.75, 0.25, 1) 0.12s;
       }
-      .motion-ready.hero-loaded .heroCopy > *,
+      .motion-ready.hero-loaded .heroCopy > :not(.fixtureRow),
       .motion-ready.hero-loaded .heroVisual {
         opacity: 1;
         transform: none;
@@ -443,10 +441,62 @@
         box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
         transition: background 0.7s ease, box-shadow 0.7s ease;
       }
-      .lights-on .aboutVisual {
-        background: radial-gradient(circle at 50% 40%, #4a4033, #15130f 70%);
-        box-shadow: 0 24px 55px rgba(217, 199, 174, 0.16);
+      .fixtureRow {
+        position: absolute;
+        z-index: 4;
+        display: flex;
+        gap: 28px;
+        pointer-events: none;
       }
+      .heroFixtures { top: 22px; right: 32px; }
+      .aboutFixtures { top: 22px; left: 50%; transform: translateX(-50%); }
+      .guaranteeFixtures { top: 24px; right: 7%; }
+      .fixture {
+        position: relative;
+        display: block;
+        width: 36px;
+        height: 9px;
+        border-radius: 5px 5px 9px 9px;
+        background: linear-gradient(#4d4d4d, #171717);
+        border: 1px solid #5c5c5c;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        transition: border-color 0.45s ease, box-shadow 0.45s ease;
+      }
+      .fixture:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -3px;
+        width: 19px;
+        height: 4px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: #303030;
+        transition: background 0.45s ease, box-shadow 0.45s ease;
+      }
+      .fixture:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 50%;
+        top: 7px;
+        width: 150px;
+        height: 155px;
+        transform: translateX(-50%);
+        background: radial-gradient(ellipse at top, rgba(255, 224, 171, 0.42), rgba(217, 199, 174, 0.13) 38%, transparent 72%);
+        filter: blur(5px);
+        opacity: 0;
+        transition: opacity 0.65s ease;
+      }
+      .lights-on .fixture {
+        border-color: #bba57f;
+        box-shadow: 0 0 10px rgba(255, 230, 189, 0.5);
+      }
+      .lights-on .fixture:before {
+        background: #fff3d5;
+        box-shadow: 0 0 10px #fff, 0 0 22px rgba(255, 214, 151, 0.9);
+      }
+      .lights-on .fixture:after { opacity: 1; }
       .aboutVisual:before {
         content: "";
         position: absolute;
@@ -659,11 +709,15 @@
       .ctaVisual {
         background: radial-gradient(
           circle at 68% 44%,
-          #f6d5a3 0 4%,
-          #6d5540 18%,
+          #302921 0 4%,
+          #211c18 18%,
           #171717 54%
         );
         position: relative;
+        transition: background 0.7s ease;
+      }
+      .lights-on .ctaVisual {
+        background: radial-gradient(circle at 68% 44%, #f6d5a3 0 4%, #6d5540 18%, #171717 54%);
       }
       .ctaVisual:after {
         content: "";
@@ -674,8 +728,10 @@
         left: 58%;
         top: 28%;
         border-radius: 30px 30px 10px 10px;
-        box-shadow: 0 0 45px rgba(255, 209, 151, 0.5);
+        box-shadow: 0 0 5px rgba(255, 209, 151, 0.08);
+        transition: box-shadow 0.7s ease;
       }
+      .lights-on .ctaVisual:after { box-shadow: 0 0 45px rgba(255, 209, 151, 0.62); }
       .ctaCopy {
         padding: 42px 7%;
         display: flex;
@@ -937,7 +993,7 @@
         .motion-ready .scrollReveal,
         .motion-ready .aboutLogo,
         .aboutVisual:before,
-        .motion-ready .heroCopy > *,
+        .motion-ready .heroCopy > :not(.fixtureRow),
         .motion-ready .heroVisual {
           opacity: 1;
           transform: none;
@@ -1022,7 +1078,7 @@
   <body>
     <button id="lightSwitch" class="lightSwitch" type="button" aria-pressed="false">
       <span class="switchTrack" aria-hidden="true"><span class="switchKnob"></span></span>
-      <span id="lightSwitchLabel">Tänd sidan</span>
+      <span id="lightSwitchLabel">Tänd armaturerna</span>
     </button>
     <div id="cursorLight" class="cursorLight" aria-hidden="true"></div>
     <div class="powerRail" aria-hidden="true"><span id="powerFill" class="powerFill"></span></div>
@@ -1043,6 +1099,9 @@
       <section class="hero">
         <div class="heroGrid">
           <div class="heroCopy">
+            <div class="fixtureRow heroFixtures" aria-hidden="true">
+              <span class="fixture"></span><span class="fixture"></span><span class="fixture"></span>
+            </div>
             <div class="kicker">Elinstallationer i södra Skåne</div>
             <h1>Trygg el<br />för en ljusare<br />framtid</h1>
             <p>
@@ -1279,6 +1338,9 @@
             </div>
           </div>
           <div class="aboutVisual">
+            <div class="fixtureRow aboutFixtures" aria-hidden="true">
+              <span class="fixture"></span><span class="fixture"></span>
+            </div>
             <div class="aboutLogoWrap">
               <img class="aboutLogo" src="logo-white.png" alt="MG Elinstallationer – Din elektriker" />
             </div>
@@ -1297,6 +1359,9 @@
         </div>
       </section>
       <section class="guarantee" id="garanti">
+        <div class="fixtureRow guaranteeFixtures" aria-hidden="true">
+          <span class="fixture"></span><span class="fixture"></span><span class="fixture"></span>
+        </div>
         <div class="wrap">
           <div class="guaranteeIntro">
             <div class="kicker">MG-garantin</div>
@@ -1555,7 +1620,7 @@
         var renderLightMode = function () {
           document.body.classList.toggle("lights-on", lightsOn);
           lightSwitch.setAttribute("aria-pressed", lightsOn ? "true" : "false");
-          lightSwitchLabel.textContent = lightsOn ? "Släck sidan" : "Tänd sidan";
+          lightSwitchLabel.textContent = lightsOn ? "Släck armaturerna" : "Tänd armaturerna";
         };
 
         renderLightMode();
