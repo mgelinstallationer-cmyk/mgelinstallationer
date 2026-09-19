@@ -817,7 +817,7 @@
       }
       .footerGrid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 0.85fr 1fr 1.35fr;
         gap: 35px;
         align-items: center;
       }
@@ -833,6 +833,116 @@
       .legal {
         border-left: 1px solid #333;
         padding-left: 38px;
+        color: #ccc;
+        font-size: 12px;
+      }
+      .companyDetails {
+        margin-top: 10px;
+        color: #8f8f8f;
+        font-size: 10px;
+        line-height: 1.65;
+      }
+      .policyButton {
+        appearance: none;
+        border: 0;
+        border-bottom: 1px solid #666;
+        background: transparent;
+        color: #ccc;
+        padding: 0 0 2px;
+        margin: 0 12px 6px 0;
+        font: inherit;
+        cursor: pointer;
+      }
+      .policyButton:hover {
+        color: #fff;
+        border-color: #fff;
+      }
+      .policyDialog {
+        width: min(720px, calc(100% - 32px));
+        max-height: calc(100vh - 48px);
+        overflow: auto;
+        border: 1px solid #45413b;
+        background: #151515;
+        color: #f5f3ef;
+        padding: 0;
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65);
+      }
+      .policyDialog::backdrop {
+        background: rgba(0, 0, 0, 0.76);
+        backdrop-filter: blur(5px);
+      }
+      .policyContent {
+        padding: 34px;
+      }
+      .policyContent h2 {
+        margin: 5px 0 18px;
+        font-size: 34px;
+      }
+      .policyContent h3 {
+        margin: 22px 0 7px;
+        font: 700 12px Arial, sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .policyContent p,
+      .policyContent li {
+        color: #c9c9c9;
+        font-size: 13px;
+      }
+      .policyContent ul {
+        padding-left: 20px;
+      }
+      .policyClose {
+        position: sticky;
+        float: right;
+        top: 15px;
+        width: 36px;
+        height: 36px;
+        border: 1px solid #555;
+        border-radius: 50%;
+        background: #202020;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .cookieChoices {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+      .cookieChoice {
+        border: 1px solid #777;
+        background: transparent;
+        color: #fff;
+        padding: 10px 14px;
+        font: 700 10px Arial, sans-serif;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+      .cookieChoice.primary {
+        background: #f3f0e9;
+        border-color: #f3f0e9;
+        color: #111;
+      }
+      .cookieNotice {
+        position: fixed;
+        z-index: 60;
+        right: 20px;
+        bottom: 20px;
+        width: min(430px, calc(100% - 40px));
+        padding: 20px;
+        border: 1px solid #444;
+        background: rgba(15, 15, 15, 0.97);
+        color: #fff;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+      }
+      .cookieNotice[hidden] {
+        display: none;
+      }
+      .cookieNotice p {
+        margin: 0;
         color: #ccc;
         font-size: 12px;
       }
@@ -946,6 +1056,14 @@
         .lightSwitch {
           left: 12px;
           bottom: 12px;
+        }
+        .cookieNotice {
+          right: 12px;
+          bottom: 72px;
+          width: calc(100% - 24px);
+        }
+        .policyContent {
+          padding: 24px;
         }
       }
 
@@ -1581,10 +1699,20 @@
           <img class="footerLogo" src="logo.jpg" alt="MG Elinstallationer" />
           <div class="contactLines">
             ☎ &nbsp;070-521 62 42<br />✉ &nbsp;mgelinstallationer@gmail.com<br />⌖
-            &nbsp;Skåne
+            &nbsp;Horstgatan 6F, 247 63 Veberöd
           </div>
           <div class="legal">
-            Integritetspolicy<br />Cookies
+            <button class="policyButton" type="button" data-dialog="privacyDialog">
+              Integritetspolicy
+            </button>
+            <button class="policyButton" type="button" data-dialog="cookieDialog">
+              Cookies &amp; lokal lagring
+            </button>
+            <div class="companyDetails">
+              Malte Gårdlund Larsson · MG Elinstallationer<br />
+              Org.nr 021224-4115 · VAT SE021224411501<br />
+              Auktoriserad elinstallatör (AL) · Registrerad hos Elsäkerhetsverket
+            </div>
             <div class="copy">
               © 2026 MG Elinstallationer. Alla rättigheter förbehållna.
             </div>
@@ -1592,6 +1720,113 @@
         </div>
       </div>
     </footer>
+    <dialog id="privacyDialog" class="policyDialog" aria-labelledby="privacyTitle">
+      <div class="policyContent">
+        <button class="policyClose" type="button" aria-label="Stäng">×</button>
+        <div class="kicker">Din integritet</div>
+        <h2 id="privacyTitle">Integritetspolicy</h2>
+        <p>
+          MG Elinstallationer värnar om din personliga integritet. Personuppgiftsansvarig är
+          Malte Gårdlund Larsson, MG Elinstallationer, org.nr 021224-4115,
+          Horstgatan 6F, 247 63 Veberöd. Kontakt:
+          mgelinstallationer@gmail.com eller 070-521 62 42.
+        </p>
+        <h3>Vilka uppgifter behandlas?</h3>
+        <p>
+          När du kontaktar företaget eller begär offert kan namn, telefonnummer,
+          e-postadress, adress och information om det önskade arbetet behandlas.
+          Offertformuläret sparar inga uppgifter på webbplatsen, utan öppnar din
+          e-postapp så att du själv kan kontrollera och skicka meddelandet.
+        </p>
+        <h3>Varför behandlas uppgifterna?</h3>
+        <p>
+          Uppgifterna används för att besvara förfrågningar, lämna offert,
+          planera och utföra uppdrag samt uppfylla avtal och rättsliga skyldigheter.
+          Behandlingen grundas på åtgärder inför avtal, avtal, berättigat intresse
+          och rättslig förpliktelse.
+        </p>
+        <h3>Lagring och delning</h3>
+        <p>
+          Förfrågningar sparas endast så länge de behövs för kontakten. Uppgifter
+          som ingår i kund- och bokföringsunderlag sparas så länge lag kräver.
+          Uppgifter säljs inte. De kan hanteras av leverantörer av e-post,
+          bokföring eller andra tjänster som behövs för att driva verksamheten.
+        </p>
+        <h3>Dina rättigheter</h3>
+        <p>
+          Du kan begära tillgång, rättelse, radering eller begränsning av dina
+          uppgifter och invända mot viss behandling. Kontakta företaget via
+          uppgifterna ovan. Du har även rätt att lämna klagomål till
+          Integritetsskyddsmyndigheten (IMY).
+        </p>
+        <h3>Kundrecensioner</h3>
+        <p>
+          Publicerade kundrecensioner och namn visas med respektive kunds
+          godkännande. Ett godkännande kan återkallas genom att kontakta företaget.
+        </p>
+      </div>
+    </dialog>
+    <dialog id="cookieDialog" class="policyDialog" aria-labelledby="cookieTitle">
+      <div class="policyContent">
+        <button class="policyClose" type="button" aria-label="Stäng">×</button>
+        <div class="kicker">Webbplatsinställningar</div>
+        <h2 id="cookieTitle">Cookies &amp; lokal lagring</h2>
+        <p>
+          Webbplatsen använder ingen besöksstatistik, annonsering eller spårning.
+          Om du godkänner valfri lagring sparas endast dina val för funktionerna
+          ”Tänd armaturerna” och ”Lys upp MG” lokalt i din webbläsare.
+        </p>
+        <p>
+          Uppgifterna skickas inte till MG Elinstallationer och innehåller inga
+          kontaktuppgifter. Du kan när som helst ändra ditt val här eller rensa
+          webbplatsdata i webbläsaren.
+        </p>
+        <div class="cookieChoices">
+          <button id="allowStorage" class="cookieChoice primary" type="button">
+            Tillåt valfri lagring
+          </button>
+          <button id="denyStorage" class="cookieChoice" type="button">
+            Avstå valfri lagring
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <div id="cookieNotice" class="cookieNotice" hidden>
+      <p>
+        Sidan kan komma ihåg dina ljusval lokalt i webbläsaren. Ingen statistik
+        eller marknadsföringsspårning används.
+      </p>
+      <div class="cookieChoices">
+        <button id="noticeAllowStorage" class="cookieChoice primary" type="button">
+          Tillåt
+        </button>
+        <button id="noticeDenyStorage" class="cookieChoice" type="button">
+          Avstå
+        </button>
+        <button class="cookieChoice" type="button" data-dialog="cookieDialog">
+          Läs mer
+        </button>
+      </div>
+    </div>
+    <script>
+      (function () {
+        document.querySelectorAll("[data-dialog]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            document.getElementById(button.dataset.dialog).showModal();
+          });
+        });
+        document.querySelectorAll(".policyClose").forEach(function (button) {
+          button.addEventListener("click", function () {
+            button.closest("dialog").close();
+          });
+        });
+        document.querySelectorAll(".policyDialog").forEach(function (dialog) {
+          dialog.addEventListener("click", function (event) {
+            if (event.target === dialog) dialog.close();
+          });
+        });
+      })();
+    </script>
     <script>
       document
         .getElementById("moreServicesToggle")
@@ -1732,13 +1967,49 @@
         var logoLightButton = document.getElementById("logoLightButton");
         var logoLightLabel = document.getElementById("logoLightLabel");
         var aboutVisual = document.querySelector(".aboutVisual");
+        var cookieNotice = document.getElementById("cookieNotice");
         var lightsOn = false;
         var logoLit = false;
+        var storageAllowed = false;
+        var storageChoice = null;
 
         try {
-          lightsOn = window.localStorage.getItem("mg-lights") === "on";
-          logoLit = window.localStorage.getItem("mg-logo-light") === "on";
+          storageChoice = window.localStorage.getItem("mg-storage-consent");
+          storageAllowed = storageChoice === "yes";
+          if (storageAllowed) {
+            lightsOn = window.localStorage.getItem("mg-lights") === "on";
+            logoLit = window.localStorage.getItem("mg-logo-light") === "on";
+          }
         } catch (error) {}
+
+        if (!storageChoice) cookieNotice.hidden = false;
+
+        var setStorageChoice = function (allowed) {
+          storageAllowed = allowed;
+          cookieNotice.hidden = true;
+          try {
+            window.localStorage.setItem("mg-storage-consent", allowed ? "yes" : "no");
+            if (!allowed) {
+              window.localStorage.removeItem("mg-lights");
+              window.localStorage.removeItem("mg-logo-light");
+            }
+          } catch (error) {}
+          var cookieDialog = document.getElementById("cookieDialog");
+          if (cookieDialog.open) cookieDialog.close();
+        };
+
+        document.getElementById("allowStorage").addEventListener("click", function () {
+          setStorageChoice(true);
+        });
+        document.getElementById("denyStorage").addEventListener("click", function () {
+          setStorageChoice(false);
+        });
+        document.getElementById("noticeAllowStorage").addEventListener("click", function () {
+          setStorageChoice(true);
+        });
+        document.getElementById("noticeDenyStorage").addEventListener("click", function () {
+          setStorageChoice(false);
+        });
 
         var renderLightMode = function () {
           document.body.classList.toggle("lights-on", lightsOn);
@@ -1750,7 +2021,7 @@
         lightSwitch.addEventListener("click", function () {
           lightsOn = !lightsOn;
           renderLightMode();
-          try {
+          if (storageAllowed) try {
             window.localStorage.setItem("mg-lights", lightsOn ? "on" : "off");
           } catch (error) {}
         });
@@ -1765,7 +2036,7 @@
         logoLightButton.addEventListener("click", function () {
           logoLit = !logoLit;
           renderLogoLight();
-          try {
+          if (storageAllowed) try {
             window.localStorage.setItem("mg-logo-light", logoLit ? "on" : "off");
           } catch (error) {}
         });
